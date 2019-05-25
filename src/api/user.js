@@ -1,18 +1,19 @@
 import request from '@/utils/request'
 
+// 用户名登录
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/api-token-auth/',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+// 获取用户名信息
+export function getInfo() {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/userInfo/',
+    method: 'get'
   })
 }
 
