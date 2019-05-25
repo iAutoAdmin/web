@@ -14,7 +14,7 @@
             <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
               <el-dropdown-item>个人信息</el-dropdown-item>
             </a>
-            <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+            <a href="javascript:;" @click="updatePassword()">
               <el-dropdown-item>修改密码</el-dropdown-item>
             </a>
             <el-dropdown-item divided>
@@ -28,13 +28,14 @@
       <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
       <sidebar class="sidebar-container"/>
       <div class="main-container">
-        <div :class="{'fixed-header':fixedHeader}">
+        <!-- <div :class="{'fixed-header':fixedHeader}"> -->
+        <div :class="{'fixed-header':true}">
           <navbar/>
         </div>
         <app-main/>
       </div>
     </div>
-    <changePassword></ChangePassword>
+    <changePassword :isUpdatePasswordDom.sync="isUpdatePassword"></ChangePassword>
   </div>
 </template>
 
@@ -46,6 +47,11 @@ import ResizeMixin from "./mixin/ResizeHandler";
 
 export default {
   name: "Layout",
+  data() {
+    return {
+      isUpdatePassword: false
+    }
+  },
   components: {
     Navbar,
     Sidebar,
@@ -74,6 +80,9 @@ export default {
   },
   methods: {
     ...mapActions(['resetToken','getInfo']),
+    updatePassword() {
+      this.isUpdatePassword = true;
+    },
     logout() {
       // console.log(this.resetToken())
       this.$store.dispatch("user/resetToken");
@@ -172,7 +181,7 @@ export default {
 
 .fixed-header {
   position: fixed;
-  top: 0;
+  top: 50px;
   right: 0;
   z-index: 9;
   width: calc(100% - #{$sideBarWidth});

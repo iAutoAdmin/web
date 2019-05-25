@@ -1,13 +1,25 @@
 <template>
-  <div id="ChangePassword">
-    <el-dialog title="修改密码" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
-  </div>
+  <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
+  <el-dialog id="ChangePassword" title="修改密码" :visible.sync="dialogFormVisible">
+    <el-form :model="form">
+      <el-form-item label="用户名" :label-width="formLabelWidth">
+        <el-input v-model="form.username" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" :label-width="formLabelWidth">
+        <el-input v-model="form.password" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" :label-width="formLabelWidth">
+        <el-input v-model="form.name" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号" :label-width="formLabelWidth">
+        <el-input v-model="form.phone" auto-complete="off"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="submit()">确 定</el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -15,45 +27,40 @@ export default {
   name: "ChangePassword",
   data() {
     return {
-      dialogVisible: false
+      dialogFormVisible: false,
+      form: {
+        username: "",
+        password: "",
+        name: "",
+        phone: ""
+      },
+      formLabelWidth: "120px"
     };
   },
+  props: ["isUpdatePasswordDom"],
   methods: {
     /* 方法 */
-    handleClose() {}
+    submit() {
+      this.$emit("update:isUpdatePasswordDom", false);
+    }
   },
   components: {
     /* 复用组件名称 */
   },
   mounted: function() {
     /* 初始化数据 */
-
-    console.log(1);
   },
   watch: {
     /* 监听 */
+    isUpdatePasswordDom: function(val) {
+      this.dialogFormVisible = val;
+    }
   }
 };
 </script>
 
 <style lang='scss'>
 #ChangePassword {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 800px;
-  height: 400px;
-  border: 4px solid #000;
-  z-index: 99999999;
-  .el-dialog__wrapper {
-    width: 100%;
-    height: 100%;
-    .el-dialog {
-      margin: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-    }
-  }
+  // width: 800px;
 }
 </style>
