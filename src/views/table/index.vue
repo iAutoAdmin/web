@@ -126,6 +126,17 @@ export default {
         }
       }
     }
+    var validatePass2 = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error('请输入用户名'));
+      } else {
+        if(this.trim(value) == this.username){
+          callback()
+        } else {
+          callback(new Error('请输入正确的用户名'));
+        }
+      }
+    }
     return {
       api: users,
       stageDialogVisible: false,
@@ -155,7 +166,8 @@ export default {
       }],
       rules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          // message: '请输入用户名',
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -174,6 +186,10 @@ export default {
     this.getData()
   },
   methods: {
+    // 去掉首位空格
+    trim (s) {
+      return s.replace(/(^\s*)|(\s*$)/g, "");
+    },
     // 判断是否为手机号
     isPoneAvailable (pone) {
       var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -218,19 +234,18 @@ export default {
     // 新增弹框 -- 新增保存
     formSubmit (formData) {
       const data = this.formData
-      console.log(data)
       this.$refs[formData].validate((valid) => {
         if (valid) {
           if (this.dialogType === 'insert') {
             const data = this.formData
             create(data).then((res) => {
-              this.stageDialogVisible = false
               if (res.code === 200) {
                 this.$alert('新增成功！', '提示')
                 this.$refs.tablePage.refresh()
               } else {
                 this.$alert('新增失败', '提示')
               }
+              this.stageDialogVisible = false
             })
           } else {
             /* const updataData = {
