@@ -3,9 +3,9 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
-  token: getToken('AuthorizationToken'),
-  username: getToken('username'),
-  name: getToken('name')
+  token: getToken('token'),
+  username: '',
+  name: ''
 }
 
 const mutations = {
@@ -28,7 +28,7 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { token } = response
         commit('SET_TOKEN', token)
-        setToken('AuthorizationToken', token)
+        setToken('token', token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,8 +46,6 @@ const actions = {
         }
         commit('SET_NAME', username)
         commit('SET_AVATAR', name)
-        setToken('username', username)
-        setToken('name', name)
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -59,7 +57,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
-      removeToken('AuthorizationToken')
+      removeToken('token')
       location.reload()
       resetRouter()
       resolve()
