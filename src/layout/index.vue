@@ -34,12 +34,14 @@
         <app-main/>
       </div>
     </div>
+    <changePassword></ChangePassword>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { Navbar, Sidebar, AppMain } from "./components";
+import changePassword from "./components/ChangePassword";
 import ResizeMixin from "./mixin/ResizeHandler";
 
 export default {
@@ -47,7 +49,8 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    changePassword
   },
   mixins: [ResizeMixin],
   computed: {
@@ -108,7 +111,7 @@ export default {
 
 .wrapper-nav {
   height: 50px;
-  background-color: #ccc;
+  background-color: #24292e;
   .nav-menu {
     float: right;
     height: 100%;
@@ -155,6 +158,7 @@ export default {
           right: -20px;
           top: 25px;
           font-size: 12px;
+          color:#fff;
         }
       }
     }
