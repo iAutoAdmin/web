@@ -1,5 +1,5 @@
 import router from './router'
-import store from './store'
+// import store from './store'
 // import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -19,16 +19,16 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getToken('AuthorizationToken')
+  const hasToken = getToken('token')
 
   if (hasToken) {
-    if (from.path === '/login') {
-      store.dispatch('user/getInfo')
-    }
+    // if (from.path === '/login') {
+    //   store.dispatch('user/getInfo')
+    // }
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
-      await store.dispatch('user/getInfo')
+      // await store.dispatch('user/getInfo')
       NProgress.done()
     } else {
       next()

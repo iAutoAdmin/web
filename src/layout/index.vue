@@ -1,6 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div class="wrapper-nav">
+      <div class="nav-username">用户名: {{username}}</div>
       <div class="nav-menu">
         <el-dropdown class="avatar-container" trigger="click">
           <div class="avatar-wrapper">
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Navbar, Sidebar, AppMain } from "./components";
 import changePassword from "./components/ChangePassword";
 import ResizeMixin from "./mixin/ResizeHandler";
@@ -60,6 +61,7 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
+    ...mapGetters(['username']),
     sidebar() {
       return this.$store.state.app.sidebar;
     },
@@ -90,6 +92,9 @@ export default {
     handleClickOutside() {
       this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
     }
+  },
+  mounted: function() {
+    this.$store.dispatch('user/getInfo');
   }
 };
 </script>
@@ -171,6 +176,13 @@ export default {
         }
       }
     }
+  }
+  .nav-username {
+    float: right;
+    margin-right: 20px;
+    font-weight: 700;
+    line-height: 50px;
+    color: #fff;
   }
 }
 

@@ -1,7 +1,12 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import {
+  Message
+} from 'element-ui'
 // import store from '@/store'
-import { getToken } from '@/utils/auth'
+import {
+  getToken,
+  removeToken
+} from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -14,7 +19,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is
-    config.headers['Authorization'] = 'JWT ' + getToken('AuthorizationToken')
+    config.headers['Authorization'] = 'JWT ' + getToken('token')
     return config
   },
   error => {
@@ -29,7 +34,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-  */
+   */
 
   /**
    * Determine the request status by custom code
@@ -73,7 +78,14 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000
     })
-    return Promise.reject(error)
+    const statusCode = error.message.substring(error.message.length - 3)
+
+    if (statusCode === '401') {
+      removeToken('token')
+      location.href = '/login'
+    }
+
+    return Promise.reject(error).subr
   }
 )
 
