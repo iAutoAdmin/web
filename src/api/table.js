@@ -7,3 +7,22 @@ export function getList(params) {
     params
   })
 }
+
+/* liuyannan 2019/05/24 */
+// 用户列表
+export function users(params) {
+  return request({
+    url: 'http://101.200.61.189:52131/user/',
+    method: 'get',
+    params
+  })
+}
+
+// 新增用户列表
+export function create(data) {
+  return request({
+    url: 'http://101.200.61.189:52131/user/',
+    method: 'post',
+    data
+  })
+}

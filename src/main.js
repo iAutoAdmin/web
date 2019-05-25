@@ -31,6 +31,11 @@ if (process.env.NODE_ENV === 'production') {
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 
+import './components/element-ui/element-ui-init'
+import './components/common/index'
+import './assets/stylus/reset.styl'
+import './assets/stylus/common.styl'
+
 Vue.config.productionTip = false
 
 new Vue({
