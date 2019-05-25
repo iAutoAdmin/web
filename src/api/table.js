@@ -12,7 +12,7 @@ export function getList(params) {
 // 用户列表
 export function users(params) {
   return request({
-    url: 'http://101.200.61.189:52131/user/',
+    url: '/users/',
     method: 'get',
     params
   })
@@ -21,7 +21,7 @@ export function users(params) {
 // 新增用户列表
 export function create(data) {
   return request({
-    url: 'http://101.200.61.189:52131/user/',
+    url: '/user/',
     method: 'post',
     data
   })

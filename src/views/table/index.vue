@@ -1,5 +1,6 @@
 <template>
   <div id="container"  style="height:100%;">
+    <div id="username" style="display:none" :model="username">{{username}}</div>
     <div class="panel-head">
       <span class="panel-title">用户列表</span>
       <div class="panel-ctrl">
@@ -59,10 +60,13 @@
         </el-table-column>
     </el-table>
     <div class="pagination-wrap">
+      <span class="demonstration">显示总数：{{total}} 条 </span>
       <el-pagination
         @current-change="handleSizeChange"
         small
-        layout="next, pager, prev">
+        layout="next, pager, prev"
+        style="width:auto;float:right"
+        >
       </el-pagination>
     </div>
     <el-dialog
@@ -107,6 +111,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import { users, create } from '@/api/table'
 export default {
   data() {
@@ -126,7 +131,8 @@ export default {
       stageDialogVisible: false,
       radio: '1',
       page: 1,
-      username: 'test',
+      // username: '',
+      total: 0,
       loading: false,
       titleFlag: '新增用户',
       dialogType: '',
@@ -161,7 +167,9 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['username'])
+  },
   created() {
     this.getData()
   },
@@ -245,10 +253,15 @@ export default {
         page: this.page,
         username: this.username
       }
-      // this.loading = true
+      this.loading = true
       users(data).then((res) => {
-        this.tableData = res.results
-        // this.loading = false
+        if(res.count >= 0){
+          this.tableData = res.results
+          this.total = res.count
+          this.loading = false
+        }
+      }).catch(function (error) {
+        this.loading = false
       })
     }
   },
@@ -305,5 +318,12 @@ export default {
 .btn-ctrl:hover {
     -webkit-box-shadow: 0 1px 4px 0 #e63f3c;
     box-shadow: 0 1px 4px 0 #e63f3c;
+}
+.demonstration{
+  font-size: 12px;
+  font-weight: 700;
+  height: 22px;
+  line-height: 22px;
+  float: left;
 }
 </style>
