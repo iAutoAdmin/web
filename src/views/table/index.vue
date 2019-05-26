@@ -65,6 +65,7 @@
         @current-change="handleSizeChange"
         small
         layout="next, pager, prev"
+        :total="total"
         style="width:auto;float:right"
         >
       </el-pagination>
