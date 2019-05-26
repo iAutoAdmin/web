@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted: function() {
-    this.$store.dispatch('user/getInfo');
+
   }
 };
 </script>
