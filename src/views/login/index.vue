@@ -12,8 +12,8 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
+          v-model.trim="loginForm.username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -28,9 +28,9 @@
         <el-input
           :key="passwordType"
           ref="password"
-          v-model="loginForm.password"
+          v-model.trim="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
@@ -59,20 +59,27 @@ export default {
     //     callback()
     //   }
     // }
+    const validateUsername = (rule, value, callback) => {
+      if (value.length === 0) {
+        callback(new Error('用户名不能为空'))
+      } else {
+        callback()
+      }
+    }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))
+      if (value.length === 0) {
+        callback(new Error('密码不能为空'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'test',
-        password: 'abcd.1234'
+        username: '',
+        password: ''
       },
       loginRules: {
-        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
@@ -99,6 +106,7 @@ export default {
         this.$refs.password.focus()
       })
     },
+    // 用户登录
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
