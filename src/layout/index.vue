@@ -1,11 +1,13 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div class="wrapper-nav">
-      <div class="nav-username">用户名: {{username}}</div>
+      <div class="nav-logo">
+        <span>AutoAdmin</span>
+      </div>
       <div class="nav-menu">
         <el-dropdown class="avatar-container" trigger="click">
           <div class="avatar-wrapper">
-            <img src="../assets/image/download.jpg" class="user-avatar">
+            <span class="nav-username">{{username}}</span>
             <i class="el-icon-caret-bottom"/>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -125,7 +127,14 @@ export default {
 
 .wrapper-nav {
   height: 50px;
-  background-color: #24292e;
+  background-color: #304156;
+  .nav-logo{
+    float:left;
+    font-size: 30px;
+    line-height: 50px;
+    padding-left:10px;
+    color:white;
+  }
   .nav-menu {
     float: right;
     height: 100%;
@@ -179,7 +188,6 @@ export default {
   }
   .nav-username {
     float: right;
-    margin-right: 20px;
     font-weight: 700;
     line-height: 50px;
     color: #fff;
