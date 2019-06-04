@@ -7,8 +7,8 @@
       <div class="nav-menu">
         <el-dropdown class="avatar-container" trigger="click">
           <div class="avatar-wrapper">
-            <span class="nav-username">{{username}}</span>
-            <i class="el-icon-caret-bottom"/>
+            <span class="nav-username">{{ username }}</span>
+            <i class="el-icon-caret-bottom" />
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
             <router-link to="/">
@@ -28,33 +28,28 @@
       </div>
     </div>
     <div class="wrapper-main">
-      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-      <sidebar class="sidebar-container"/>
+      <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+      <sidebar class="sidebar-container" />
       <div class="main-container">
         <!-- <div :class="{'fixed-header':fixedHeader}"> -->
         <div :class="{'fixed-header':true}">
-          <navbar/>
+          <navbar />
         </div>
-        <app-main/>
+        <app-main />
       </div>
     </div>
-    <changePassword :isUpdatePasswordDom.sync="isUpdatePassword"></ChangePassword>
+    <changePassword :isUpdatePasswordDom.sync="isUpdatePassword" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { Navbar, Sidebar, AppMain } from "./components";
-import changePassword from "./components/ChangePassword";
-import ResizeMixin from "./mixin/ResizeHandler";
+import { Navbar, Sidebar, AppMain } from './components'
+import changePassword from './components/ChangePassword'
+import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
-  name: "Layout",
-  data() {
-    return {
-      isUpdatePassword: false
-    }
-  },
+  name: 'Layout',
   components: {
     Navbar,
     Sidebar,
@@ -62,43 +57,45 @@ export default {
     changePassword
   },
   mixins: [ResizeMixin],
+  data() {
+    return {
+      isUpdatePassword: false
+    }
+  },
   computed: {
     ...mapGetters(['username']),
     sidebar() {
-      return this.$store.state.app.sidebar;
+      return this.$store.state.app.sidebar
     },
     device() {
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     fixedHeader() {
-      return this.$store.state.settings.fixedHeader;
+      return this.$store.state.settings.fixedHeader
     },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile"
-      };
+        mobile: this.device === 'mobile'
+      }
     }
   },
   methods: {
-    ...mapActions(['resetToken','getInfo']),
+    ...mapActions(['resetToken', 'getInfo']),
     updatePassword() {
-      this.isUpdatePassword = true;
+      this.isUpdatePassword = true
     },
     logout() {
       // console.log(this.resetToken())
-      this.$store.dispatch("user/resetToken");
+      this.$store.dispatch('user/resetToken')
     },
     handleClickOutside() {
-      this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
-  },
-  mounted: function() {
-
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
