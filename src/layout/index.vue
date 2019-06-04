@@ -38,7 +38,7 @@
         <app-main />
       </div>
     </div>
-    <changePassword :isUpdatePasswordDom.sync="isUpdatePassword" />
+    <changePassword :is-update-password-dom.sync="isUpdatePassword" />
   </div>
 </template>
 
@@ -57,6 +57,9 @@ export default {
     changePassword
   },
   mixins: [ResizeMixin],
+  props: {
+    isUpdatePasswordDom: Boolean
+  },
   data() {
     return {
       isUpdatePassword: false
@@ -124,12 +127,13 @@ export default {
 
 .wrapper-nav {
   height: 50px;
+  margin-bottom: 2px;
   background-color: #304156;
   .nav-logo{
     float:left;
     font-size: 30px;
     line-height: 50px;
-    padding-left:10px;
+    padding-left: 20px;
     color:white;
   }
   .nav-menu {
@@ -160,10 +164,10 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
-
       .avatar-wrapper {
-        margin-top: 5px;
+        margin-top: 0px;
         position: relative;
+        font-size: 20px;
 
         .user-avatar {
           cursor: pointer;
@@ -175,9 +179,9 @@ export default {
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
+          right: -14px;
+          top: 20px;
+          font-size: 14px;
           color:#fff;
         }
       }
@@ -185,6 +189,9 @@ export default {
   }
   .nav-username {
     float: right;
+    min-width: 100px;
+    padding-right: 10px;
+    text-align: right;
     font-weight: 700;
     line-height: 50px;
     color: #fff;
@@ -192,13 +199,13 @@ export default {
 }
 
 .wrapper-main {
-  height: calc(100% - 50px);
+  height: calc(100% - 52px);
   overflow-y: auto;
 }
 
 .fixed-header {
   position: fixed;
-  top: 50px;
+  top: 52px;
   right: 0;
   z-index: 9;
   width: calc(100% - #{$sideBarWidth});

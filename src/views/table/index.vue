@@ -1,6 +1,6 @@
 <template>
-  <div id="container"  style="height:100%;">
-    <div id="username" style="display:none" :model="username">{{username}}</div>
+  <div id="container" style="height:100%;">
+    <div id="username" style="display:none" :model="username">{{ username }}</div>
     <div class="panel-head">
       <span class="panel-title">用户列表</span>
       <div class="panel-ctrl">
@@ -8,94 +8,95 @@
       </div>
     </div>
     <el-table
+      ref="tablePage"
+      v-loading="loading"
       :data="tableData"
       stripe
-      ref='tablePage'
-      v-loading='loading'
-      style="width: 100%;max-height: 350px;">
+      style="width: 100%;max-height: 350px;"
+    >
       <el-table-column
-          type="index"
-          label="序号"
-          align="center"
-          width="60">
-        </el-table-column>
-        <el-table-column
-          property="id"
-          label="ID"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="username"
-          label="用户名"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="name"
-          label="姓名"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="phone"
-          label="电话"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="email"
-          label="邮箱"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          property="is_active"
-          label="登录状态"
-          align="center">
-          <template slot-scope="scope">
-            <div v-if='scope.row.is_active'>登录状态</div>
-            <div v-else>未登录状态</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          property="last_login"
-          label="登陆日期"
-          align="center">
-        </el-table-column>
+        type="index"
+        label="序号"
+        align="center"
+        width="60"
+      />
+      <el-table-column
+        property="id"
+        label="ID"
+        align="center"
+      />
+      <el-table-column
+        property="username"
+        label="用户名"
+        align="center"
+      />
+      <el-table-column
+        property="name"
+        label="姓名"
+        align="center"
+      />
+      <el-table-column
+        property="phone"
+        label="电话"
+        align="center"
+      />
+      <el-table-column
+        property="email"
+        label="邮箱"
+        align="center"
+      />
+      <el-table-column
+        property="is_active"
+        label="登录状态"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <div v-if="scope.row.is_active">登录状态</div>
+          <div v-else>未登录状态</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        property="last_login"
+        label="登陆日期"
+        align="center"
+      />
     </el-table>
     <div class="pagination-wrap">
-      <span class="demonstration">显示总数：{{total}} 条 </span>
+      <span class="demonstration">显示总数：{{ total }} 条 </span>
       <el-pagination
-        @current-change="handleSizeChange"
-        small
-        layout="next, pager, prev"
-        :total="total"
         style="width:auto;float:right"
-        >
-      </el-pagination>
+        :total="total"
+        layout="next, pager, prev"
+        small
+        @current-change="handleSizeChange"
+      />
     </div>
     <el-dialog
+      v-loading="loadingDialog"
       :title="titleFlag"
       :visible.sync="stageDialogVisible"
       :append-to-body="true"
-      v-loading="loadingDialog"
       width="720px"
       class="form-dialog"
-      >
+    >
       <el-form
-        :model="formData"
         ref="formData"
+        :model="formData"
         :inline="true"
         label-width="88px"
         label-position="left"
         size="mini"
         class="search-form"
-        :rules = "rules"
+        :rules="rules"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="formData.username"></el-input>
+          <el-input v-model.trim="formData.username" />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="formData.name"></el-input>
+          <el-input v-model.trim="formData.name" />
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="formData.phone"></el-input>
+          <el-input v-model.trim="formData.phone" />
         </el-form-item>
         <el-form-item label="登录状态" prop="is_active">
           <el-radio-group v-model="formData.is_active">
@@ -118,23 +119,23 @@ export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('请输入手机号码或座机号码'));
+        callback(new Error('请输入手机号码或座机号码'))
       } else {
-        if(this.isPoneAvailable(value) || this.isTelAvailable(value)){
+        if (this.isPoneAvailable(value) || this.isTelAvailable(value)) {
           callback()
         } else {
-          callback(new Error('请输入正确的手机号码或座机号码'));
+          callback(new Error('请输入正确的手机号码或座机号码'))
         }
       }
     }
     var validatePass2 = (rule, value, callback) => {
       if (!value) {
-        callback(new Error('请输入用户名'));
+        callback(new Error('请输入用户名'))
       } else {
-        if(this.trim(value) == this.username){
+        if (value === this.username) {
           callback()
         } else {
-          callback(new Error('请输入正确的用户名'));
+          callback(new Error('请输入正确的用户名'))
         }
       }
     }
@@ -145,25 +146,24 @@ export default {
       page: 1,
       // username: '',
       total: 0,
-      loading: false,
       titleFlag: '新增用户',
       dialogType: '',
       loading: false,
       loadingDialog: false,
       formData: {
-        "username": "",
-        "name": null,
-        "phone": null,
-        "is_active": 1,
+        'username': '',
+        'name': null,
+        'phone': null,
+        'is_active': 1
       },
       tableData: [{
-        "id": '',
-        "username": '',
-        "name": null,
-        "phone": null,
-        "email": '',
-        "is_active": false,
-        "last_login": ''
+        'id': '',
+        'username': '',
+        'name': null,
+        'phone': null,
+        'email': '',
+        'is_active': false,
+        'last_login': ''
       }],
       rules: {
         username: [
@@ -186,14 +186,11 @@ export default {
   created() {
     this.getData()
   },
+  mounted() {},
   methods: {
-    // 去掉首位空格
-    trim (s) {
-      return s.replace(/(^\s*)|(\s*$)/g, "");
-    },
     // 判断是否为手机号
-    isPoneAvailable (pone) {
-      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    isPoneAvailable(pone) {
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
       if (!myreg.test(pone)) {
         return false
       } else {
@@ -201,8 +198,8 @@ export default {
       }
     },
     // 判断是否为电话号码
-    isTelAvailable (tel) {
-      var myreg = /^0\d{2,3}-?\d{7,8}$/;
+    isTelAvailable(tel) {
+      var myreg = /^0\d{2,3}-?\d{7,8}$/
       if (!myreg.test(tel)) {
         return false
       } else {
@@ -210,36 +207,36 @@ export default {
       }
     },
     // 分页改变
-    handleSizeChange (pageSize) {
+    handleSizeChange(pageSize) {
       this.page = pageSize
       this.getData()
     },
     // 点击 -- 新增用户
-    addUser () {
+    addUser() {
       this.stageDialogVisible = true
       this.titleFlag = '新增用户'
       this.dialogType = 'insert'
       const that = this
-      setTimeout(function () {
+      setTimeout(() => {
         that.$refs.formData.resetFields()
       }, 50)
     },
     // 新增弹框 -- 取消
-    formClose () {
+    formClose() {
       this.stageDialogVisible = false
       const that = this
-      setTimeout(function () {
+      setTimeout(() => {
         that.$refs.formData.resetFields()
       }, 50)
     },
     // 新增弹框 -- 新增保存
-    formSubmit (formData) {
-      const data = this.formData
+    formSubmit(formData) {
+      // const data = this.formData
       this.$refs[formData].validate((valid) => {
         if (valid) {
           if (this.dialogType === 'insert') {
-            const data = this.formData
-            create(data).then((res) => {
+            const DATA = this.formData
+            create(DATA).then((res) => {
               if (res.code === 200) {
                 this.$alert('新增成功！', '提示')
                 this.$refs.tablePage.refresh()
@@ -264,24 +261,24 @@ export default {
         }
       })
     },
-    getData () {
-      let data = {
+    getData() {
+      const DATA = {
         page: this.page,
         username: this.username
       }
       this.loading = true
-      users(data).then((res) => {
-        if(res.count >= 0){
+      users(DATA).then((res) => {
+        if (res.count >= 0) {
           this.tableData = res.results
           this.total = res.count
           this.loading = false
         }
-      }).catch(function (error) {
+      }).catch(error => {
+        console.log(error)
         this.loading = false
       })
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 <style lang="stylus" scoped>

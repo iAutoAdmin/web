@@ -73,16 +73,32 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    const statusCode = error.message.substring(error.message.length - 3)
+    const STATUS_CODE = error.message.substring(error.message.length - 3)
+    const STATUS_CODE_FUN = {
+      '401': function() {
+        setTimeout(() => {
+          removeToken('token')
+          location.href = '/login'
+        }, 3000)
+      }
+    }
+    const STATUS_CODE_LIST = [
+      { code: '400', message: '用户名或密码错误 !' },
+      { code: '401', message: '登录过期 ! 3 秒后将为您跳转到登录页 !', callback: STATUS_CODE_FUN['401'] }
+    ]
 
-    if (statusCode === '401') {
-      removeToken('token')
-      location.href = '/login'
+    for (let i = 0, II = STATUS_CODE_LIST.length; i < II; i++) {
+      if (STATUS_CODE_LIST[i].code === STATUS_CODE) {
+        // 错误信息提示
+        Message({
+          message: STATUS_CODE_LIST[i].message,
+          type: 'error',
+          duration: 3000
+        })
+        // 错误信息操作
+        STATUS_CODE_LIST[i].callback && STATUS_CODE_LIST[i].callback()
+        break
+      }
     }
 
     return Promise.reject(error).subr

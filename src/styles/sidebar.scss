@@ -12,10 +12,10 @@
     transition: width 0.28s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
-    height: calc(100% - 50px);
+    height: calc(100% - 52px);
     position: fixed;
     font-size: 0px;
-    top: 50px;
+    top: 52px;
     bottom: 0;
     left: 0;
     z-index: 1001;
@@ -40,7 +40,7 @@
 
     &.has-logo {
       .el-scrollbar {
-        height: calc(100% - 50px);
+        height: calc(100% - 52px);
       }
     }
 
