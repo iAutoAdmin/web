@@ -51,8 +51,8 @@
         align="center"
       >
         <template slot-scope="scope">
-          <div v-if="scope.row.is_active">登录状态</div>
-          <div v-else>未登录状态</div>
+          <div v-if="scope.row.is_active">登录</div>
+          <div v-else>未登录</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -98,16 +98,10 @@
         <el-form-item label="电话" prop="phone">
           <el-input v-model.trim="formData.phone" />
         </el-form-item>
-        <!-- <el-form-item label="登录状态" prop="is_active">
-          <el-radio-group v-model="formData.is_active">
-            <el-radio :label="1">已登录</el-radio>
-            <el-radio :label="2">未登录</el-radio>
-          </el-radio-group>
-        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="large" @click="formSubmit('formData')">提交</el-button>
         <el-button type="info" size="large" @click="formClose">关闭</el-button>
+        <el-button type="primary" size="large" @click="formSubmit('formData')">提交</el-button>
       </span>
     </el-dialog>
   </div>
@@ -128,17 +122,6 @@ export default {
         }
       }
     }
-    var validatePass2 = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请输入用户名'))
-      } else {
-        if (value === this.username) {
-          callback()
-        } else {
-          callback(new Error('请输入正确的用户名'))
-        }
-      }
-    }
     return {
       api: users,
       stageDialogVisible: false,
@@ -146,7 +129,7 @@ export default {
       page: 1,
       // username: '',
       total: 0,
-      titleFlag: '新增用户',
+      titleFlag: 'AutoAdmin',
       dialogType: '',
       loading: false,
       loadingDialog: false,
@@ -166,8 +149,7 @@ export default {
       }],
       rules: {
         username: [
-          // message: '请输入用户名',
-          { required: true, validator: validatePass2, trigger: 'blur' }
+          { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
