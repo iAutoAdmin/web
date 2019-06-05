@@ -1,12 +1,12 @@
 <template>
   <span class="btn-ctrl" @click="handleClick">
-    <slot></slot>
+    <slot />
   </span>
 </template>
 <script>
 export default {
   methods: {
-    handleClick () {
+    handleClick() {
       this.$emit('click')
     }
   }

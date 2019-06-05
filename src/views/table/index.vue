@@ -98,12 +98,12 @@
         <el-form-item label="电话" prop="phone">
           <el-input v-model.trim="formData.phone" />
         </el-form-item>
-        <el-form-item label="登录状态" prop="is_active">
+        <!-- <el-form-item label="登录状态" prop="is_active">
           <el-radio-group v-model="formData.is_active">
             <el-radio :label="1">已登录</el-radio>
             <el-radio :label="2">未登录</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="large" @click="formSubmit('formData')">提交</el-button>
@@ -153,8 +153,7 @@ export default {
       formData: {
         'username': '',
         'name': null,
-        'phone': null,
-        'is_active': 1
+        'phone': null
       },
       tableData: [{
         'id': '',
