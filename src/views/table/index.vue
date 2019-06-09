@@ -155,7 +155,6 @@ export default {
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ],
         phone: [
-          // { required: true, message: '请输入电话', trigger: 'blur' }
           { required: true, validator: validatePass, trigger: 'blur' }
         ]
       }
