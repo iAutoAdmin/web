@@ -1,18 +1,18 @@
 <template>
-  <div id="container" style="height:100%;">
-    <div id="username" style="display:none" :model="username">{{ username }}</div>
+  <div id="container">
+    <div id="username" :model="username">{{ username }}</div>
     <div class="panel-head">
-      <span class="panel-title">用户列表</span>
+      <h4 class="panel-title">用户列表</h4>
       <div class="panel-ctrl">
-        <button-ctrl @click="addUser">新增用户</button-ctrl>
+        <el-button type="primary" @click="addUser"><i class="el-icon-circle-plus" /> 新增用户</el-button>
       </div>
     </div>
     <el-table
       ref="tablePage"
       v-loading="loading"
       :data="tableData"
+      border
       stripe
-      style="width: 100%;max-height: 350px;"
     >
       <el-table-column
         type="index"
@@ -24,6 +24,7 @@
         property="id"
         label="ID"
         align="center"
+        width="120"
       />
       <el-table-column
         property="username"
@@ -61,16 +62,17 @@
         align="center"
       />
     </el-table>
-    <div class="pagination-wrap">
-      <span class="demonstration">显示总数：{{ total }} 条 </span>
+
+    <div class="block">
       <el-pagination
-        style="width:auto;float:right"
         :total="total"
-        layout="next, pager, prev"
-        small
-        @current-change="handleSizeChange"
+        layout="total, prev, pager, next, jumper"
+        :current-page="1"
+        :page-size="50"
+        @size-change="handleSizeChange"
       />
     </div>
+
     <el-dialog
       v-loading="loadingDialog"
       :title="titleFlag"
@@ -261,62 +263,18 @@ export default {
   }
 }
 </script>
-<style lang="stylus" scoped>
-#container{
-  margin-bottom: 10px;
-  background: #fff;
-  -webkit-box-shadow: 0 1px 6px 0 rgba(0,0,0,0.1);
-  box-shadow: 0 1px 6px 0 rgba(0,0,0,0.1);
-  border-radius: 4px;
-  background: #fff;
-}
-.panel-head{
-    height: 44px;
-    padding: 0 20px;
-    line-height: 44px;
-}
-.panel-title{
-    display: inline-block;
-    padding-left: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1;
-    border-left: 2px solid #e63f3c;
-}
-.panel-ctrl{
-    float: right;
-    margin-top: 11px;
-}
-.btn-ctrl{
-    display: inline-block;
-    float: left;
-    min-width: 70px;
-    height: 22px;
-    padding: 0 10px;
-    margin-left: 10px;
-    font-size: 12px;
-    line-height: 22px;
-    text-align: center;
-    color: #e63f3c;
-    background: #fff;
-    -webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
-    border-radius: 100px;
-    cursor: pointer;
-    -webkit-transition: -webkit-box-shadow 0.3s;
-    transition: -webkit-box-shadow 0.3s;
-    transition: box-shadow 0.3s;
-    transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
-}
-.btn-ctrl:hover {
-    -webkit-box-shadow: 0 1px 4px 0 #e63f3c;
-    box-shadow: 0 1px 4px 0 #e63f3c;
-}
-.demonstration{
-  font-size: 12px;
-  font-weight: 700;
-  height: 22px;
-  line-height: 22px;
-  float: left;
+<style lang="scss" scoped>
+#container {
+  padding-top: 20px;
+  #username {
+    display: none;
+  }
+  .panel-head {
+    display: flex;
+    padding-right: 20px;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+  }
 }
 </style>

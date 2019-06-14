@@ -18,7 +18,7 @@ export function users(params) {
   })
 }
 
-// 新增用户
+// 新增用户列表
 export function create(data) {
   return request({
     url: '/users/',
