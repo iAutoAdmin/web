@@ -47,10 +47,10 @@
         width="60"
       />
       <el-table-column
+        v-if="false"
         property="id"
         label="ID"
         align="center"
-        v-if="false"
       />
       <el-table-column
         property="username"
@@ -92,16 +92,18 @@
         width="150px"
         align="center"
       >
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleEdit(scope.row)"
+          >编辑</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <div class="block">
@@ -149,6 +151,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import { isPoneTelAvailable } from '@/utils/validate'
 import { users, create } from '@/api/table'
 export default {
   data() {
@@ -156,7 +159,7 @@ export default {
       if (!value) {
         callback(new Error('请输入手机号码或座机号码'))
       } else {
-        if (this.isPoneAvailable(value) || this.isTelAvailable(value)) {
+        if (isPoneTelAvailable(value)) {
           callback()
         } else {
           callback(new Error('请输入正确的手机号码或座机号码'))
@@ -214,24 +217,6 @@ export default {
   },
   mounted() {},
   methods: {
-    // 判断是否为手机号
-    isPoneAvailable(pone) {
-      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
-      if (!myreg.test(pone)) {
-        return false
-      } else {
-        return true
-      }
-    },
-    // 判断是否为电话号码
-    isTelAvailable(tel) {
-      var myreg = /^0\d{2,3}-?\d{7,8}$/
-      if (!myreg.test(tel)) {
-        return false
-      } else {
-        return true
-      }
-    },
     // 查询
     onSubmitFilter() {
       this.getData(this.formDataFilter)
