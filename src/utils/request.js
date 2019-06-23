@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 import {
   Message
 } from 'element-ui'
@@ -73,18 +74,25 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    const STATUS_CODE = error.message.substring(error.message.length - 3)
+    let is_unknown_code = true
+    const STATUS_CODE = error.response.status
     const STATUS_CODE_FUN = {
       '401': function() {
         setTimeout(() => {
           removeToken('token')
           location.href = '/login'
         }, 3000)
+      },
+      '403': function() {
+        router.replace('dashboard')
       }
     }
+
     const STATUS_CODE_LIST = [
-      { code: '400', message: '用户名或密码错误 !' },
-      { code: '401', message: '登录过期 ! 3 秒后将为您跳转到登录页 !', callback: STATUS_CODE_FUN['401'] }
+      { code: 400, message: '用户名或密码错误 !' },
+      { code: 401, message: '登录过期 ! 3 秒后将为您跳转到登录页 !', callback: STATUS_CODE_FUN['401'] },
+      { code: 403, message: '权限拒绝 !', callback: STATUS_CODE_FUN['403'] },
+      { code: 500, message: '服务器内部错误 !' }
     ]
 
     for (let i = 0, II = STATUS_CODE_LIST.length; i < II; i++) {
@@ -97,8 +105,16 @@ service.interceptors.response.use(
         })
         // 错误信息操作
         STATUS_CODE_LIST[i].callback && STATUS_CODE_LIST[i].callback()
+        // 阻止位置错误 code 提示
+        is_unknown_code = false
         break
       }
+    }
+    if (is_unknown_code) {
+      Message({
+        type: 'error',
+        message: error.response.data.detail
+      })
     }
 
     return Promise.reject(error).subr

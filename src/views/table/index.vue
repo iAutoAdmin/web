@@ -4,7 +4,7 @@
     <div class="panel-head">
       <h4 class="panel-title">用户列表</h4>
       <div class="panel-ctrl">
-        <el-button type="primary" @click="addUser"><i class="el-icon-circle-plus" /> 新增用户</el-button>
+        <el-button type="primary" class="pan-btn blue-btn" @click="addUser"><i class="el-icon-circle-plus" /> 新增用户</el-button>
       </div>
     </div>
     <el-table
@@ -84,10 +84,7 @@
       <el-form
         ref="formData"
         :model="formData"
-        :inline="true"
-        label-width="88px"
-        label-position="left"
-        size="mini"
+        label-width="120px"
         class="search-form"
         :rules="rules"
       >
@@ -102,8 +99,8 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="info" size="large" @click="formClose">关闭</el-button>
-        <el-button type="primary" size="large" @click="formSubmit('formData')">提交</el-button>
+        <el-button size="large" @click="formClose">取 消</el-button>
+        <el-button type="primary" size="large" @click="formSubmit('formData')">提 交</el-button>
       </span>
     </el-dialog>
   </div>
