@@ -7,17 +7,14 @@
     @click="isDialogFormVisible()"
   >
     <el-form :model="form" label-width="120px">
-      <el-form-item label="用户名">
-        <el-input v-model="form.username" auto-complete="off"><!-- 用户名 --></el-input>
+      <el-form-item label="旧密码">
+        <el-input v-model="form.password" auto-complete="off" />
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="form.password" auto-complete="off"><!-- 密码 --></el-input>
+      <el-form-item label="新密码">
+        <el-input v-model="form.name" auto-complete="off" />
       </el-form-item>
-      <el-form-item label="姓名">
-        <el-input v-model="form.name" auto-complete="off"><!-- 姓名 --></el-input>
-      </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="form.phone" auto-complete="off"><!-- 手机号 --></el-input>
+      <el-form-item label="确认密码">
+        <el-input v-model="form.password" auto-complete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

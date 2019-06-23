@@ -1,6 +1,32 @@
 <template>
   <div id="container">
     <div id="username" :model="username">{{ username }}</div>
+    <div>
+      <el-form
+        :model="formDataFilter"
+        label-width="60px"
+        :inline="true"
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model.trim="formDataFilter.username" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model.trim="formDataFilter.name" />
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="formDataFilter.struts" placeholder="All">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmitFilter">查 询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="onResetFilter">重 置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <div class="panel-head">
       <h4 class="panel-title">用户列表</h4>
       <div class="panel-ctrl">
@@ -24,7 +50,7 @@
         property="id"
         label="ID"
         align="center"
-        width="120"
+        v-if="false"
       />
       <el-table-column
         property="username"
@@ -61,15 +87,31 @@
         label="登陆日期"
         align="center"
       />
+      <el-table-column
+        label="操作"
+        width="150px"
+        align="center"
+      >
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.row)">编辑</el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          @click="handleDelete(scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
     </el-table>
 
     <div class="block">
       <el-pagination
         :total="total"
-        layout="total, prev, pager, next, jumper"
+        layout="total, sizes, prev, pager, next, jumper"
         :current-page="1"
-        :page-size="50"
-        @size-change="handleSizeChange"
+        :page-sizes="[10, 50, 100]"
+        :page-size="10"
+        @current-change="handleCurrentChange"
       />
     </div>
 
@@ -125,13 +167,18 @@ export default {
       api: users,
       stageDialogVisible: false,
       radio: '1',
-      page: 1,
       // username: '',
       total: 0,
       titleFlag: 'AutoAdmin',
       dialogType: '',
       loading: false,
       loadingDialog: false,
+      formDataFilter: {
+        'page': '1',
+        'username': '',
+        'name': '',
+        'struts': ''
+      },
       formData: {
         'username': '',
         'name': null,
@@ -163,7 +210,7 @@ export default {
     ...mapGetters(['username'])
   },
   created() {
-    this.getData()
+    this.getData(this.formDataFilter)
   },
   mounted() {},
   methods: {
@@ -185,10 +232,29 @@ export default {
         return true
       }
     },
+    // 查询
+    onSubmitFilter() {
+      this.getData(this.formDataFilter)
+    },
+    // 重置
+    onResetFilter() {
+      this.formDataFilter.username = ''
+      this.formDataFilter.name = ''
+      this.formDataFilter.struts = ''
+      this.getData(this.formDataFilter)
+    },
     // 分页改变
-    handleSizeChange(pageSize) {
-      this.page = pageSize
-      this.getData()
+    handleCurrentChange(pageSize) {
+      this.formDataFilter.page = pageSize
+      this.getData(this.formDataFilter)
+    },
+    // 列表操作 - 编辑
+    handleEdit(id) {
+      console.log(id)
+    },
+    // 列表操作 - 删除
+    handleDelete() {
+
     },
     // 点击 -- 新增用户
     addUser() {
@@ -240,13 +306,9 @@ export default {
         }
       })
     },
-    getData() {
-      const DATA = {
-        page: this.page,
-        username: this.username
-      }
+    getData(paramsFilter) {
       this.loading = true
-      users(DATA).then((res) => {
+      users(paramsFilter).then((res) => {
         if (res.count >= 0) {
           this.tableData = res.results
           this.total = res.count
@@ -272,6 +334,12 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 50px;
+  }
+  .block {
+    padding-top: 10px;
+    .el-pagination {
+      text-align: right;
+    }
   }
 }
 </style>

@@ -99,9 +99,8 @@ service.interceptors.response.use(
       if (STATUS_CODE_LIST[i].code === STATUS_CODE) {
         // 错误信息提示
         Message({
-          message: STATUS_CODE_LIST[i].message,
           type: 'error',
-          duration: 3000
+          message: STATUS_CODE_LIST[i].message
         })
         // 错误信息操作
         STATUS_CODE_LIST[i].callback && STATUS_CODE_LIST[i].callback()
