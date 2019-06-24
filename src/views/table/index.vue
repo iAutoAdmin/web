@@ -4,7 +4,7 @@
     <div>
       <el-form
         :model="formDataFilter"
-        label-width="80px"
+        label-width=auto
         :inline="true"
       >
         <el-form-item label="用户名" prop="username">
@@ -229,7 +229,7 @@ export default {
     onResetFilter() {
       this.formDataFilter.username = ''
       this.formDataFilter.name = ''
-      this.formDataFilter.struts = ''
+      this.formDataFilter.phone = ''
       this.getData(this.formDataFilter)
     },
     // 分页改变
