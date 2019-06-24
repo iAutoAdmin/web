@@ -4,8 +4,8 @@
     <div>
       <el-form
         :model="formDataFilter"
-        label-width=auto
         :inline="true"
+        :label-width="auto"
       >
         <el-form-item label="用户名" prop="username">
           <el-input v-model.trim="formDataFilter.username" />
