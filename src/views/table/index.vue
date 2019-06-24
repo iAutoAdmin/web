@@ -4,7 +4,7 @@
     <div>
       <el-form
         :model="formDataFilter"
-        label-width="60px"
+        label-width="80px"
         :inline="true"
       >
         <el-form-item label="用户名" prop="username">
@@ -13,12 +13,15 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model.trim="formDataFilter.name" />
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="电话号码" prop="phone">
+          <el-input v-model.trim="formDataFilter.phone" />
+        </el-form-item>
+        <!-- <el-form-item label="状态">
           <el-select v-model="formDataFilter.struts" placeholder="All">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="onSubmitFilter">查 询</el-button>
         </el-form-item>
@@ -78,8 +81,8 @@
         align="center"
       >
         <template slot-scope="scope">
-          <div v-if="scope.row.is_active">登录</div>
-          <div v-else>未登录</div>
+          <div v-if="scope.row.is_active">激活</div>
+          <div v-else>未激活</div>
         </template>
       </el-table-column>
       <el-table-column
@@ -111,9 +114,10 @@
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         :current-page="1"
-        :page-sizes="[10, 50, 100]"
+        :page-sizes="[10, 20, 50, 100]"
         :page-size="10"
         @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
       />
     </div>
 
@@ -152,7 +156,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { isPoneTelAvailable } from '@/utils/validate'
-import { users, create } from '@/api/table'
+import { users, tableCreate } from '@/api/table'
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -180,7 +184,8 @@ export default {
         'page': '1',
         'username': '',
         'name': '',
-        'struts': ''
+        'phone': '',
+        'page_size': '10'
       },
       formData: {
         'username': '',
@@ -212,10 +217,9 @@ export default {
   computed: {
     ...mapGetters(['username'])
   },
-  created() {
+  mounted() {
     this.getData(this.formDataFilter)
   },
-  mounted() {},
   methods: {
     // 查询
     onSubmitFilter() {
@@ -233,9 +237,15 @@ export default {
       this.formDataFilter.page = pageSize
       this.getData(this.formDataFilter)
     },
+    // 改变分页默认展示多少条数据
+    handleSizeChange(pageSize) {
+      this.formDataFilter.page_size = pageSize
+      this.getData(this.formDataFilter)
+    },
     // 列表操作 - 编辑
     handleEdit(id) {
       console.log(id)
+      // this.$router.replace('/dashboard')
     },
     // 列表操作 - 删除
     handleDelete() {
@@ -261,32 +271,14 @@ export default {
     },
     // 新增弹框 -- 新增保存
     formSubmit(formData) {
-      // const data = this.formData
       this.$refs[formData].validate((valid) => {
         if (valid) {
           if (this.dialogType === 'insert') {
             const DATA = this.formData
-            create(DATA).then((res) => {
-              if (res.code === 200) {
-                this.$alert('新增成功！', '提示')
-                this.$refs.tablePage.refresh()
-              } else {
-                this.$alert('新增失败', '提示')
-              }
+            tableCreate(DATA).then((res) => {
+              this.getData(this.formDataFilter)
               this.stageDialogVisible = false
             })
-          } else {
-            /* const updataData = {
-            }
-            update(updataData).then((res) => {
-              this.stageDialogVisible = false
-              if (res.code === 200) {
-                this.$alert('编辑成功！', '提示')
-                this.$refs.tablePage.refresh()
-              } else {
-                this.$alert('编辑失败', '提示')
-              }
-            }) */
           }
         }
       })
