@@ -6,20 +6,22 @@
     :visible.sync="dialogFormVisible"
     @click="isDialogFormVisible()"
   >
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="旧密码">
-        <el-input v-model="form.password" auto-complete="off" />
-      </el-form-item>
+    <el-form
+      ref="formData"
+      :model="formData"
+      label-width="120px"
+      :rules="rules"
+    >
       <el-form-item label="新密码">
-        <el-input v-model="form.name" auto-complete="off" />
+        <el-input v-model.trim="formData.password" auto-complete="off" />
       </el-form-item>
-      <el-form-item label="确认密码">
-        <el-input v-model="form.password" auto-complete="off" />
+      <el-form-item label="确认密码" prop="phone">
+        <el-input v-model.trim="formData.phone" auto-complete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="isDialogFormVisible()">取 消</el-button>
-      <el-button type="primary" @click="submit()">确 定</el-button>
+      <el-button type="primary" @click="submit('formData')">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -34,13 +36,23 @@ export default {
     }
   },
   data() {
+    var verifyPassword = (rule, value, callback) => {
+      if (value === this.password) {
+        callback()
+      } else {
+        callback(new Error('两次密码不一致 !'))
+      }
+    }
     return {
       dialogFormVisible: false,
-      form: {
-        username: '',
+      formData: {
         password: '',
-        name: '',
         phone: ''
+      },
+      rules: {
+        phone: [
+          { required: true, validator: verifyPassword, trigger: 'blur' }
+        ]
       }
     }
   },
@@ -63,7 +75,10 @@ export default {
   },
   methods: {
     /* 方法 */
-    submit() {
+    submit(formName) {
+      this.$refs[formName].validate((valid) => {
+
+      });
       this.$emit('update:isUpdatePasswordDom', false)
     },
     isDialogFormVisible() {

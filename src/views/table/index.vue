@@ -5,7 +5,7 @@
       <el-form
         :model="formDataFilter"
         :inline="true"
-        :label-width="auto"
+        label-width="auto"
       >
         <el-form-item label="用户名" prop="username">
           <el-input v-model.trim="formDataFilter.username" />
@@ -162,12 +162,12 @@ export default {
     var validatePass = (rule, value, callback) => {
       if (!value) {
         callback(new Error('请输入手机号码或座机号码'))
+        return
+      }
+      if (isPoneTelAvailable(value)) {
+        callback()
       } else {
-        if (isPoneTelAvailable(value)) {
-          callback()
-        } else {
-          callback(new Error('请输入正确的手机号码或座机号码'))
-        }
+        callback(new Error('请输入正确的手机号码或座机号码'))
       }
     }
     return {
